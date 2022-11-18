@@ -17,7 +17,7 @@ function requestHandler (req, res) {
     // To Get All Blogs
 
     if (req.url === '/blogs' && req.method=== 'GET'){
-        getAllUsers(req, res)
+        getAllBlogs(req, res)
     }else if (req.url === '/blogs' && req.method === 'POST'){
         //create new blog
         createBlog(req, res)
