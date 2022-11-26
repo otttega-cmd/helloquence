@@ -1,80 +1,113 @@
-const http = require('http');
+const express = require('express');
+const app = express();
+
+
+const bodyParser = require('body-parser');
+const router = express.Router();
+
+app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const fs = require('fs');
 const path = require('path');
 
-const PORT = '3000';
-const HOST_NAME = 'localhost';
+const port = 3000;
 
-// Using path module to create a path
-const blogDbPath = path.join(__dirname, "db", 'blogs.json');
-let blogDB = [];
+const blogs = [
 
+{
+    "title": "A New Blog 1",
+    "description": "New Disc",
+    "blogId": 1
+},
 
-function requestHandler (req, res) {
-    res.setHeader('Content-Type', 'application/json');
+{
+    "title": "New",
+    "description": "New Disc22",
+    "blogId": 2
+},
 
-    //Blogs
-    // To Get All Blogs
-
-    if (req.url === '/blogs' && req.method=== 'GET'){
-        getAllBlogs(req, res)
-    }else if (req.url === '/blogs' && req.method === 'POST'){
-        //create new blog
-        createBlog(req, res)
-    }else if (req.url === '/blogs' && req.method === 'PUT' ){
-        editBlogPost(req, res)
-    }else if (req.url === '/blog' && req.method === 'DELETE'){
-        deleteBlogPost(req,res)
-    }
+{
+    "title": "milk",
+    "description": "newMilk",
+    "blogId": 3
 }
-    
+];
+
+// const blogDbPath = path.join(__dirname, "db", 'blogs.json');
 
 
-const getAllBlogs = function (req, res) {
-    fs.readFile(blogDbPath, "utf8", (err, blogs) => {
-        if (err) {
-            console.log(err);
-            res.WriteHead(400);
-            res.end("An Error Occurred");
-        }
+// const blogDB = path.join(__dirname, "db", "blogs.json");
 
-        res.end(blogs);
-    })
-    
-}
-console.log("🚀 ~ file: server.js ~ line 53 ~ getAllBlogs ~ getAllBlogs", getAllBlogs)
+// Get Routes
+
+//Get Root Directory
+app.get ('/', (req, res) => {
+    res.send("Hello World");
+})
 
 
-// To Create A New Blog Post
-// function createBlog (req, res) {
-//     console.log("🚀 ~ file: server.js ~ line 53 ~ createBlog ~ function")
-//     const body = [];
+// Get All Blogs
 
-//     req.on('data', (chunk) => {
-//         body.push(chunk);
-//     }).end('end', ()=> {
-//         console.log("🚀 ~ file: server.js ~ line 58 ~ req.on ~ .end")
-//         bufferBody = Buffer.concat(body).toString();
-//         parsedBody = JSON.parse(bufferBody);
-//         console.log(parsedBody);
-//         res.WriteHead(200, { 'Content-Type': 'application/json'});
-
-//     });
-//     console.log("🚀 ~ file: server.js ~ line 59 ~ req.on ~ req.on")
-// }
-
-const editBlogPost = (req, res) => {
-
-}
-
-const deleteBlogPost = (req, res) => {
-
-}
-
-const server = http.createServer(requestHandler);
-
-server.listen(PORT, HOST_NAME, ()=> {
-    //parse file system for blogDbPath and read sync
-    blogDB = JSON.parse(fs.readFileSync(blogDbPath, 'utf8'))
-    console.log(`Server is listening on ${HOST_NAME}:${PORT}`);
+app.get('/blogs', (req, res) => {
+    res.send(blogs);
 });
+
+ // Get blog by req params
+
+    app.get('/blogs/:findable', (req, res)=>{
+        const reqParamString  = req.params.findable;
+        const reqParamNumber = Number(reqParamString);
+
+        const notFound = !blogs.includes(reqParamString || reqParamNumber);
+
+        for (let i = 0; i < blogs.length; i++) {
+            
+           if (notFound){
+            res.sendStatus(404);
+            break;
+           } else if (blogs[i].title === reqParamString) {
+                res.send(blogs[i]);
+                break;
+            }else if (blogs[i].description === reqParamString) {
+                res.send(blogs[i]);
+                break;
+            }else if (blogs[i].blogId === reqParamNumber) {
+                res.send(blogs[i]);
+                break;
+            }
+            
+        } 
+        // {
+            // if (blogs[i] == undefined) {
+            //     res.send(404);
+
+            // }else if (reqParamString === null || reqParamNumber === null || reqParamString === undefined || reqParamNumber === undefined) {
+            //     res.send(404);
+            // }else 
+
+            
+        // } 
+
+});
+
+
+
+
+// Create New Blog
+
+app.post('/blogs', (req, res)=>{
+
+    console.log(req.body);
+    blogs.push(req.body);
+    res.status(201).send("Blog Created");
+});
+    // let body = [];
+
+//     req.on('error', (err)=>{
+
+app.listen(port, ()=>{
+    console.log("listening on port " + port);
+})
