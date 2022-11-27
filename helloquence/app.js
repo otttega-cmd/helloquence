@@ -9,10 +9,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+
+// Import Models
+
+
 
 // Set Up Mongoose Connection
-const mongoDB = "mongodb://127.0.0.1/my_database";
+const mongoDB = "mongodb://localhost/my_database";
 mongoose.connect(mongoDB, { useNewUrlParser:true, useUnifiedTopology:true });
 
 // Get The Default Connection
@@ -21,25 +24,8 @@ const db = mongoose.connection;
 // Bind connection to error event (to get notification of connection errors)
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+const BlogModel = require('./models/blog_model');
 
-const AuthorSchema = new Schema({
-  first_name: String,
-  last_name: String,
-  email: String,
-  password: String,
-})
-
-const BlogSchema = new Schema({
-  title: String,
-  description: String,
-  body: String,
-  author: String,
-  publication_time: Date,
-  blog_state: { type: Boolean, default: false },
-  read_count: Number,
-  reading_time: Number,
-  tags: String,
-})
 
 
 // import routers from routes
@@ -68,25 +54,59 @@ app.use('/users/cool', usersRouter);
 app.use('/blogs/', blogsRouter);
 
 
-const new_blog = mongoose.model ('New Blog', BlogSchema)
+// test created model by creating a test blog
 
-const testBlog = new new_blog({
+const testBlog = new BlogModel({
   title: 'A New Blog',
   description: 'A new blog description',
   body: 'A New Body description',
   author: 'John Doe',
   publication_time: Date.now(),
-  blog_state: { type: Boolean, default: false },
+  published: false,
   read_count: 12,
   reading_time: 5,
   tags: 'new'
 });
 
+const testBlog2 = new BlogModel({
+  title: 'Moon Daily',
+  description: 'A new sunshine description',
+  body: 'A New away description',
+  author: 'John Damien',
+  publication_time: Date.now(),
+  published: false,
+  read_count: 14,
+  reading_time: 3,
+  tags: 'old'
+});
+
+const testBlog3 = new BlogModel({
+  title: 'Moon Daily',
+  description: 'A new moon description',
+  body: 'A New fold description',
+  author: 'Mary Blaine',
+  publication_time: Date.now(),
+  published: false,
+  read_count: 9,
+  reading_time: 32,
+  tags: 'intermediate'
+});
+
+// Save test blog
 testBlog.save(function (err){
   if(err) return err;
 });
 
-console.log(testBlog);
+testBlog2.save(function (err){
+  if(err) return err;
+});
+
+testBlog3.save(function (err){
+  if(err) return err;
+});
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
