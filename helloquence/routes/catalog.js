@@ -88,22 +88,22 @@ router.post(
   blog_instance_controller.bloginstance_delete_post
 );
 
-// GET request to update BookInstance.
+// GET request to update BlogInstance.
 router.get(
   "/bloginstance/:id/update",
   blog_instance_controller.bloginstance_update_get
 );
 
-// POST request to update BookInstance.
+// POST request to update BlogInstance.
 router.post(
   "/bloginstance/:id/update",
   blog_instance_controller.bloginstance_update_post
 );
 
-// GET request for one BookInstance.
+// GET request for one BlogInstance.
 router.get("/bloginstance/:id", blog_instance_controller.bloginstance_detail);
 
-// GET request for list of all BookInstance.
+// GET request for list of all BlogInstance.
 router.get("/bloginstances", blog_instance_controller.bloginstance_list);
 
 module.exports = router;

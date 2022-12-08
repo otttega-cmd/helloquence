@@ -1,8 +1,21 @@
 const BlogInstance = require("../models/blog_instance_model");
 
 // Display list of all BlogInstances.
-exports.bloginstance_list = (req, res) => {
-  res.send("NOT IMPLEMENTED: BookInstance list");
+exports.bloginstance_list = function (req, res) {
+  BlogInstance.find()
+    .populate("blog")
+    .exec(function (err, list_bloginstances) {
+      if (err) {
+        return next(err);
+      }
+      // Successful, so render
+      res.render("bloginstance_list", {
+        title: "Blog Instance List",
+        bloginstance_list: list_bloginstances,
+      });
+    });
+
+
 };
 
 // Display detail page for a specific BlogInstance.
