@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Title:
+      input#title.form-control(type='text', placeholder='Name of blog' name='title' required='true' value=(undefined===blog ? '' : blog.title) )
+    
+    div.form-group
+      label(for='author') Author:
+      select#author.form-control(type='select' placeholder='Select author' name='author' required='true' )
+        - authors.sort(function(a, b) {let textA = a.last_name.toUpperCase(); let textB = b.last_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for author in authors
+          if blog
+            //- Handle GET form, where blog.author is an object, and POST form, where it is a string.
+            option(
+              value=author._id
+              selected=(
+                author._id.toString()==blog.author._id
+                || author._id.toString()==blog.author
+              ) ? 'selected' : false
+            ) #{author.name}
+          else
+            option(value=author._id) #{author.name}
+
+    
+    div.form-group
+      label(for='description') Description:
+      textarea#description.form-control(type='textarea', placeholder='Description' name='description' required='true') #{undefined===blog ? '' : blog.description}
+    
+    div.form-group
+      label(for='body') Body:
+      textarea#body.form-control(type='textarea', placeholder='Body' name='body' required='true') #{undefined===blog ? '' : blog.body}
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

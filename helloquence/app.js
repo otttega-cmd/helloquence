@@ -8,6 +8,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
+
+
 
 
 // view engine setup
@@ -26,9 +29,9 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // import models
-const BlogModel = require('./models/blog_model');
-const AuthorModel = require('./models/author_model');
-const BlogInstanceModel = require ('./models/blog_instance_model')
+const Blog = require('./models/blog_model');
+const Author = require('./models/author_model');
+const BlogInstance = require ('./models/blog_instance_model')
 
 
 
@@ -49,7 +52,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
 
 
 
@@ -58,46 +62,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/users/cool', usersRouter);
-app.use('/blogs', blogsRouter);
+// app.use('/blogs', blogsRouter);
 app.use('/catalog', catalogRouter);
-
-
-// test created model by creating a test blog
-
-const testBlog = new BlogModel({
-  title: 'A New Blog',
-  description: 'A new blog description',
-  body: 'A New Body description',
-  author: 'John Doe',
-  publication_time: Date.now(),
-  published: false,
-  read_count: 12,
-  reading_time: 5,
-  tags: 'new'
-});
-
-const testBlog2 = new BlogModel({
-  title: 'Moon Daily',
-  description: 'A new sunshine description',
-  body: 'A New away description',
-  author: 'John Damien',
-  publication_time: Date.now(),
-  published: false,
-  read_count: 14,
-  reading_time: 3,
-  tags: 'old'
-});
-
-
-// Save test blog
-testBlog.save(function (err){
-  if(err) return err;
-});
-
-testBlog2.save(function (err){
-  if(err) return err;
-});
-// console.log(testBlog);
 
 
 // catch 404 and forward to error handler

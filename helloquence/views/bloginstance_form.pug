@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h1=title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='book') Blog:
+      select#blog.form-control(type='select' placeholder='Select blog' name='blog' required='true')
+        - blog_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for blog in blog_list
+          option(value=blog._id, selected=(selected_book==blog._id.toString() ? 'selected' : false) ) #{blog.title}
+
+    div.form-group
+      label(for='due_for_revision') Date when blog is due for revision:
+      input#due_for_revision.form-control(type='date' name='due_for_revision' value=(undefined===bloginstance ? '' : bloginstance.due_for_revision))
+
+    div.form-group
+      label(for='status') Status:
+      select#status.form-control(type='select' placeholder='Select status' name='status' required='true')
+        option(value='Draft') Draft
+        option(value='Published') Published
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

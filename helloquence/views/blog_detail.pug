@@ -26,6 +26,12 @@ block content
         p #[strong Due For Revision:] #{val.due_for_revision_formatted}
       p #[strong Id:]
         a(href=val.url) #{val._id}
+      hr
+      p
+      a(href=blog.url+'/delete') Delete Book
+      
+      a(href=blog.url+'/update') Update Book
 
     else
       p There are no copies of this blog in the db.
+        

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+  h1 Author: #{author.first_name} #{author.last_name}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Blogs:
+
+    dl
+      each blog in author_blogs
+        dt
+          a(href=blog.url) #{blog.title}
+        dd #{blog.body}
+
+      else
+        p This author has no blogs.
+
+        hr
+        p
+        a(href=author.url+'/delete') Delete author

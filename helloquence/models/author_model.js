@@ -7,7 +7,7 @@ const AuthorSchema = new Schema({
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true }
   });
   
 
@@ -17,9 +17,9 @@ AuthorSchema.virtual("name").get(function () {
     // We want to make sure we handle the exception by returning an empty string for that case
     let full_name = "";
     if (this.first_name && this.last_name) {
-      full_name = `${this.last_name}, ${this.first_name}`;
+      full_name = `${this.first_name} ${this.last_name}`;
     }
-    if (!this.first_name || !this.family_name) {
+    if (!this.first_name || !this.last_name) {
       full_name = "";
     }
     return full_name;
@@ -29,7 +29,7 @@ AuthorSchema.virtual("name").get(function () {
 // Virtual for author's URL
     AuthorSchema.virtual("url").get(function () {
     // We don't use an arrow function as we'll need the this object
-    return `/catalogue/author/${this._id}`;
+    return `/catalog/author/${this._id}`;
   });
 
 

@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  h1 ID: #{bloginstance._id}
+
+  p #[strong Title:]
+    a(href=bloginstance.blog.url) #{bloginstance.blog.title}
+
+  p #[strong Status: ]
+    if bloginstance.status=='Published'
+      span.text-success #{bloginstance.status}
+    else if bloginstance.status=='Draft'
+      span.text-danger #{bloginstance.status}
+    else
+      span.text-warning #{bloginstance.status}
+
+  if bloginstance.status!='Draft'
+    p #[strong Due For Revision:] #{bloginstance.due_for_revision_formatted}

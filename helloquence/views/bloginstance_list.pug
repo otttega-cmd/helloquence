@@ -8,9 +8,9 @@ block content
       li
         a(href=val.url) #{val.blog.title}
         if val.status=='Published'
-          span.text-success #{val.status}
+          span.text-success  #{val.status}
         else if val.status=='Draft'
-          span.text-danger #{val.status}
+          span.text-danger  #{val.status}
         else
           span.text-warning #{val.status}
         if val.status!='Draft'
