@@ -5,6 +5,7 @@ const router = express.Router();
 const blog_controller = require("../controllers/blogController");
 const author_controller = require("../controllers/authorController");
 const blog_instance_controller = require("../controllers/blogInstanceController");
+const search_controller = require("../controllers/searchController");
 
 /// BLOG ROUTES ///
 
@@ -35,13 +36,20 @@ router.get("/blog/:id", blog_controller.blog_detail);
 // GET request for list of all Blog items.
 router.get("/blogs", blog_controller.blog_list);
 
-/// AUTHOR ROUTES ///
+/// USER ROUTES ///
 
-// GET request for creating Author. NOTE This must come before route for id (i.e. display author).
-router.get("/author/create", author_controller.author_create_get);
+// GET request for creating User. NOTE This must come before route for id (i.e. display author).
+router.get("/user/create", author_controller.author_create_get);
 
-// POST request for creating Author.
-router.post("/author/create", author_controller.author_create_post);
+// POST request for creating User.
+router.post("/user/create", author_controller.author_create_post);
+
+// GET request for logging in user
+router.get("/user/login", author_controller.author_login_get);
+
+// POST request for logging in users
+router.get("/user/login", author_controller.author_login_post);
+
 
 // GET request to delete Author.
 router.get("/author/:id/delete", author_controller.author_delete_get);
@@ -105,5 +113,10 @@ router.get("/bloginstance/:id", blog_instance_controller.bloginstance_detail);
 
 // GET request for list of all BlogInstance.
 router.get("/bloginstances", blog_instance_controller.bloginstance_list);
+
+
+
+// Search Queries
+router.get("/search", search_controller.search_get)
 
 module.exports = router;

@@ -57,7 +57,7 @@ exports.author_detail = (req, res, next) => {
 
 // Display Author create form on GET.
 exports.author_create_get = (req, res, next) => {
-  res.render('author_form', { title: "Create Author" });
+  res.render('author_form', { title: "Register an Account" });
 };
 
 // Handle Author create on POST.
@@ -110,6 +110,15 @@ exports.author_create_post = [
   },
 ];
 
+// Display Author Login Form On GET
+exports.author_login_get=(req, res, next)=>{
+  res.render("author_login_form", { title: "Login Here" })
+}
+
+// Handle Author Login Form On POST
+exports.author_login_post=(req, res, next)=>{
+  res.redirect(author_list);
+}
 
 // Display Author delete form on GET.
 exports.author_delete_get = (req, res, next) => {

@@ -9,27 +9,24 @@ html(lang='en')
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
-          block sidebar
-            ul(class='sidebar-nav')
-              li
-                a(href='/catalog') Home
-              li
-                a(href='/catalog/blogs') All Blogs
-              li
-                a(href='/catalog/authors') All Authors
-              li
-                a(href='/catalog/bloginstances') All Blog Instances
-              li
-                hr
-              li
-                a(href='/catalog/author/create') Create new author
-              li
-                a(href='/catalog/blog/create') Create new blog
-              li
-                a(href='/catalog/bloginstance/create') Create new blog instance (copy)
+    nav.navbar.navbar-expand-lg
+      a.navbar-brand(href="/api") Helloquence
+      button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+      div.collapse.navbar-collapse#navbarNav
+      ul.navbar-nav.ml-auto(class="top-nav")
+        li.nav-item
+        a.nav-link(href="/api") Home
+        li.nav-item
+        a.nav-link(href="/api/blogs") Blogs
+        li.nav-item
+        a.nav-link(href="/api/user/create") Sign Up
+        li.nav-item
+        a.nav-link(href="/api/user/login") Sign In
 
-        div(class='col-sm-10')
-          block content
+    div(class='col-sm-10')
+      block content
+
+    footer.text-center.py-3
+      p.text-muted
+      | Copyright 2022 Helloquence. All rights reserved.

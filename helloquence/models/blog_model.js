@@ -17,7 +17,7 @@ const BlogSchema = new Schema({
   // Virtual for book's URL
   BlogSchema.virtual("url").get(function () {
   // We don't use an arrow function as we'll need the this object
-  return `/catalog/blog/${this._id}`;
+  return `/api/blog/${this._id}`;
 });
 
 

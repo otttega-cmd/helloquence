@@ -1,13 +1,19 @@
 extends layout
 
 block content
-  h1= title
-
-  ul
-    each blog in blog_list
-      li
-        a(href=blog.url) #{blog.title}
-        |  (#{blog.author.first_name} #{blog.author.last_name})
-
-    else
-      li There are no blogs.
+  h1(class="title")= title
+  main
+    div.container
+    form.search-form(method='get' action='/api/search')
+      input.search-input(type='text' name='q' placeholder='Search...')
+      button.search-button(type='submit') Search
+    div.row
+        each blog in blog_list
+          div.col-md-4.mb-4
+            div.card(style="max-width: 540px;")
+              div.card-body
+                h5.card-title= blog.title
+                p.card-text= blog.body
+                a.btn.btn-primary(href=blog.url) Read more
+        else
+          p There are no blog posts

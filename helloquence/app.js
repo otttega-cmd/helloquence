@@ -37,9 +37,7 @@ const BlogInstance = require ('./models/blog_instance_model')
 
 // import routers from routes
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var catalogRouter = require('./routes/catalog');
-var blogsRouter = require('./routes/blogs');
+var apiRouter = require('./routes/api');
 const { time } = require('console');
 
 
@@ -60,10 +58,8 @@ app.use(helmet());
 
 //use imported routers (specify path here, router here, write handler in route file)
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/users/cool', usersRouter);
 // app.use('/blogs', blogsRouter);
-app.use('/catalog', catalogRouter);
+app.use('/api', apiRouter);
 
 
 // catch 404 and forward to error handler
