@@ -16,4 +16,6 @@ block content
                 p.card-text= blog.body
                 a.btn.btn-primary(href=blog.url) Read more
         else
-          p There are no blog posts
+          p There are no blog posts        
+    div.col
+      a(href='/api/blog/create') Create New Blog

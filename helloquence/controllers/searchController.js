@@ -11,7 +11,10 @@ exports.search_get = (req, res, next) => {
   }
 
   // Split the search parameter into an array of words
-  const searchWords = req.query.q.split(' ');
+    const searchWords = req.query.q.split(' ');
+    const searchTerm = searchWords[0];
+
+
 
   async function search () {
     try {
@@ -22,26 +25,32 @@ exports.search_get = (req, res, next) => {
         }))
       });
 
-    // Search for documents in the authors collection with a name that contains any of the search words
+//     // Search for documents in the authors collection with a first name aor last name that contains any of the search words
     const authorSearchResults = await Author.find({
-        $or: searchWords.map(word => ({
-          name: { $regex: word, $options: 'i' }
-        }))
-      });
+    $or: [
+      { first_name: { $regex: searchTerm, $options: 'i' } },
+      { last_name: { $regex: searchTerm, $options: 'i' } }
+    ]
+  }).select({ first_name: 1, last_name: 1 });
+  
+  
     // Concatenate the search results from both collections
-    const searchResults = blogSearchResults.concat(authorSearchResults);
-    // Render the search_results template with the search results
-    res.render('search_results', {
-    title: "Search Results",
-    results: searchResults
-  });
+    const searchResults = blogSearchResults.concat(authorSearchResults);;
+    return searchResults;
     } catch (error) {
     // Log the error to the console
     console.error(error);
     // Send a response to the client with a status code of 500 (Internal Server Error) and a message
     res.status(500).send('An error occurred'); 
     }
-
-    
   }
+ 
+  search().then(searchResults=>{
+    res.render('search_results', {
+        title: "Search Results",
+        searchResults: searchResults
+    }
+    )
+    console.log(searchResults);
+  })
 }

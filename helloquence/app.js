@@ -10,6 +10,14 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
+// Auth middleware
+const passport = require('passport');
+const connectEnsureLogin = require('connect-ensure-login');
+const session =require('express-session');
+
+
+// Configure dotenv
+require('dotenv').config();
 
 
 
@@ -19,8 +27,7 @@ app.set('view engine', 'pug');
 
 // Set Up Mongoose Connection
 const mongoose = require('mongoose');
-const mongoDB = "mongodb+srv://admin:simplepassword@helloquencecluster.7pnhlwy.mongodb.net/helloquence?retryWrites=true&w=majority";
-mongoose.connect(mongoDB, { useNewUrlParser:true, useUnifiedTopology:true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true, useUnifiedTopology:true });
 
 // Get The Default Connection
 const db = mongoose.connection;
@@ -29,9 +36,10 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // import models
-const Blog = require('./models/blog_model');
-const Author = require('./models/author_model');
-const BlogInstance = require ('./models/blog_instance_model')
+const blogModel = require('./models/blog_model');
+const authorModel = require('./models/author_model');
+const blogInstanceModel = require ('./models/blog_instance_model');
+const userModel = require('./models/user_model');
 
 
 
@@ -53,6 +61,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
+// app.use(passport.initialize()); //Initialize passport middleware
+// app.use(passport.session()); //Use session middleware
+
+// // Use Sessions
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { maxAge: 60 * 60 * 100 } //1 hour
+
+// }));
 
 
 

@@ -115,9 +115,12 @@ exports.author_login_get=(req, res, next)=>{
   res.render("author_login_form", { title: "Login Here" })
 }
 
-// Handle Author Login Form On POST
+// Handle Author Login Form On POST and auth here
 exports.author_login_post=(req, res, next)=>{
-  res.redirect(author_list);
+  // Implement form handling here and pass form data to the next GET request
+  const { email, password } = req.body;
+  req.data = { email: email, password: password };
+  next();
 }
 
 // Display Author delete form on GET.

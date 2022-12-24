@@ -128,7 +128,7 @@ exports.blog_create_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a Book object with escaped and trimmed data.
+    // Create a Blog object with escaped and trimmed data.
     const blog = new Blog({
       title: req.body.title,
       description: req.body.description,
