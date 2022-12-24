@@ -8,7 +8,7 @@ const BlogSchema = new Schema({
     body: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: 'Author'},
     publication_time: { type: Date, required: true },
-    published: { type: Boolean, default: false },
+    state: { type: String, enum: ["draft", "published"], required: true, default: "draft" },
     read_count: { type: Number, default: 0 },
     reading_time: { type: Number, default: 0 },
     // tags: [{ type: String, required: false }]

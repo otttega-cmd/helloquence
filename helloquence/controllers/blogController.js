@@ -106,23 +106,32 @@ exports.blog_create_get = (req, res, next) => {
   )
 };
 
- // Handle blog create on POST.
+// Handle blog create on POST.
+// Handle blog create on POST.
 exports.blog_create_post = [
-
   // Validate and sanitize fields.
+  // Validate title
   body("title", "Title must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
+  // Validate author
   body("author", "Author must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
+  // Validate description
   body("description", "Description must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-
+  // Validate state
+  body("state", "State must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .isIn(["draft", "published"])
+    .withMessage('State must be either "Draft" or "Published"'),
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
@@ -135,45 +144,38 @@ exports.blog_create_post = [
       body: req.body.body,
       author: req.body.author,
       publication_time: Date.now(),
+      state: req.body.state,
     });
+
+    console.log(req.body)
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
 
-      // Get all authors and genres for form.
-      async.parallel(
-        {
-          authors(callback) {
-            Author.find(callback);
-          }
-        },
-        (err, results) => {
-          if (err) {
-            return next(err);
-          }
-
-          res.render("blog_form", {
-            title: "Create Blog",
-            authors: results.authors,
-            blog,
-            errors: errors.array(),
-          });
-        }
-      );
+      // Get all authors for form.
+      Author.find((err, authors) => {
+        if (err) {
+        return next(err);
+        }    res.render("blog_form", {
+          title: "Create Blog",
+          authors,
+          blog,
+          errors: errors.array(),
+        });
+      });
       return;
     }
-
-    // Data from form is valid. Save book.
+    
+    // Data from form is valid. Save blog.
     blog.save((err) => {
       if (err) {
         return next(err);
       }
-      // Successful: redirect to new book record.
+      // Successful: redirect to new blog record.
       res.redirect(blog.url);
     });
   },
-];
-
+];    
 
 // Display blog delete form on GET.
 exports.blog_delete_get = (req, res) => {

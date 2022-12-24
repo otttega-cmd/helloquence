@@ -57,7 +57,7 @@ exports.author_detail = (req, res, next) => {
 
 // Display Author create form on GET.
 exports.author_create_get = (req, res, next) => {
-  res.render('author_form', { title: "Register an Account" });
+  res.render('user_sign_up_form', { title: "Register an Account" });
 };
 
 // Handle Author create on POST.
@@ -84,8 +84,8 @@ exports.author_create_post = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/errors messages.
-      res.render("author_form", {
-        title: "Create Author",
+      res.render("user_sign_up_form", {
+        title: "Create User",
         author: req.body,
         errors: errors.array(),
       });
@@ -112,7 +112,7 @@ exports.author_create_post = [
 
 // Display Author Login Form On GET
 exports.author_login_get=(req, res, next)=>{
-  res.render("author_login_form", { title: "Login Here" })
+  res.render("user_login_form", { title: "Login Here" })
 }
 
 // Handle Author Login Form On POST and auth here
